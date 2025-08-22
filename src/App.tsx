@@ -16,11 +16,18 @@ function App() {
 
   // Load words from public/prefix.json
   useEffect(() => {
-    fetch('/prefix.json')
-      .then(res => res.json())
-      .then(data => setKeywords(data))
-      .catch(err => console.error("Error loading prefix.json:", err));
-  }, []);
+  fetch('/prefix.json')
+    .then(res => res.json())
+    .then(data => {
+      console.log('Loaded keywords:', data); // Debug log
+      setKeywords(data);
+    })
+    .catch(err => console.error("Error loading prefix.json:", err));
+}, []);
+
+useEffect(() => {
+  if (keywords.length > 0) generateDomains();
+}, [keywords]);
 
   const generateDomains = useCallback(() => {
     if (keywords.length === 0) return;
